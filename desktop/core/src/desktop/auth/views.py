@@ -38,6 +38,7 @@ from django.utils.translation import gettext as _
 from desktop.auth import forms as auth_forms
 from desktop.auth.backend import OIDCBackend
 from desktop.auth.forms import ImpersonationAuthenticationForm, OrganizationAuthenticationForm, OrganizationUserCreationForm
+from desktop.auth.access_token import encode_token, decrypt_token
 from desktop.conf import ENABLE_ORGANIZATIONS, OAUTH, SESSION
 from desktop.lib import fsmanager
 from desktop.lib.django_util import JsonResponse, login_notrequired, render
@@ -147,11 +148,15 @@ def dt_login(request, from_modal=False):
         if require_change_password(userprofile):
           return HttpResponseRedirect('/hue' + reverse('useradmin:useradmin.views.edit_user', kwargs={'username': user.username}))
 
+        password = request.POST.get('password', '')
+        token = encode_token(password)
+
         userprofile.first_login = False
         userprofile.last_activity = datetime.now()
         if userprofile.creation_method == UserProfile.CreationMethod.EXTERNAL:  # This is to fix a bug in Hue 4.3
           userprofile.creation_method = UserProfile.CreationMethod.EXTERNAL.name
         userprofile.update_data({'auth_backend': user.backend})
+        userprofile.update_data({'token': token})
         try:
           userprofile.update_data({'X-Forwarded-For': request.META['HTTP_X_FORWARDED_FOR']})
         except KeyError as e:
