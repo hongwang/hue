@@ -1407,11 +1407,3 @@ A basic read only version is done [HUE-951](https://issues.cloudera.org/browse/H
 <script src="../js/jquery.highlight.js"></script>
 <script src="../js/hue-docs.js"></script>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-37637545-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-37637545-1');
-</script>

@@ -419,10 +419,10 @@ SECURE_CONTENT_SECURITY_POLICY = Config(
   help=_('X-Content-Type-Options: nosniff. This is a HTTP response header feature that helps prevent attacks '
     'based on MIME-type confusion.'),
   type=str,
-  default="script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.doubleclick.net data:;" +
-          "img-src 'self' *.doubleclick.net http://*.tile.osm.org *.tile.osm.org *.gstatic.com data:;" +
+  default="script-src 'self' 'unsafe-inline' 'unsafe-eval' data:;" +
+          "img-src 'self' http://*.tile.osm.org *.tile.osm.org *.gstatic.com data:;" +
           "style-src 'self' 'unsafe-inline' fonts.googleapis.com;" +
-          "connect-src 'self' *.google-analytics.com;" +
+          "connect-src 'self';" +
           "frame-src *;" +
           "child-src 'self' data: *.vimeo.com;" +
           "object-src 'none'")
@@ -1799,6 +1799,27 @@ CUSTOM_CACHE_CONTROL = Config(
   help=_("Flag to disable webpage caching."),
   type=coerce_bool,
   default=False
+)
+
+SERVER_IDENTITY_HEADER_ENABLED = Config(
+  key="server_identity_header_enabled",
+  help=_("If enabled, adds a header to HTTP responses identifying the server."),
+  type=coerce_bool,
+  default=False
+)
+
+SERVER_IDENTITY_HEADER_NAME = Config(
+  key="server_identity_header_name",
+  help=_("Name of the HTTP response header for server identity."),
+  type=str,
+  default="X-Hue-Server-Name"
+)
+
+SERVER_IDENTITY_HEADER_VALUE = Config(
+  key="server_identity_header_value",
+  help=_("Custom value for the server identity header. If empty, uses socket.gethostname()."),
+  type=str,
+  default=""
 )
 
 DATABASE_LOGGING = Config(

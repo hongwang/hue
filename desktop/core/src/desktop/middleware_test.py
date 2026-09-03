@@ -16,6 +16,7 @@
 # limitations under the License.
 
 import os
+import socket
 import sys
 import json
 import tempfile
@@ -29,10 +30,10 @@ from django.test import RequestFactory, TestCase
 from django.test.client import Client
 
 import desktop.conf
-from desktop.conf import AUDIT_EVENT_LOG_DIR, CUSTOM_CACHE_CONTROL
+from desktop.conf import AUDIT_EVENT_LOG_DIR, CUSTOM_CACHE_CONTROL, SERVER_IDENTITY_HEADER_ENABLED, SERVER_IDENTITY_HEADER_NAME, SERVER_IDENTITY_HEADER_VALUE
 from desktop.lib.django_test_util import make_logged_in_client
 from desktop.lib.test_utils import add_permission
-from desktop.middleware import CacheControlMiddleware, MultipleProxyMiddleware
+from desktop.middleware import CacheControlMiddleware, MultipleProxyMiddleware, ServerIdentityMiddleware
 
 
 @pytest.mark.django_db
@@ -267,3 +268,59 @@ class TestMultipleProxyMiddleware(TestCase):
     request.META['REMOTE_ADDR'] = '192.0.2.0'
     self.middleware(request)
     assert request.META['HTTP_X_FORWARDED_FOR'] == '192.0.2.0'
+
+
+def test_server_identity_middleware_enable():
+  c = Client()
+  request = c.get('/')
+
+  def dummy_get_response(request):
+    return HttpResponse()
+
+  reset = SERVER_IDENTITY_HEADER_ENABLED.set_for_testing(True)
+  try:
+    middleware = ServerIdentityMiddleware(dummy_get_response)
+    response = middleware(request)
+    assert 'X-Hue-Server-Name' in response
+    assert response['X-Hue-Server-Name'] == socket.gethostname()
+  finally:
+    reset()
+
+
+def test_server_identity_middleware_disable():
+  c = Client()
+  request = c.get('/')
+
+  def dummy_get_response(request):
+    return HttpResponse()
+
+  reset = SERVER_IDENTITY_HEADER_ENABLED.set_for_testing(False)
+  try:
+    middleware = ServerIdentityMiddleware(dummy_get_response)
+    assert False, "Should have raised MiddlewareNotUsed"
+  except exceptions.MiddlewareNotUsed:
+    pass
+  finally:
+    reset()
+
+
+def test_server_identity_middleware_custom():
+  c = Client()
+  request = c.get('/')
+
+  def dummy_get_response(request):
+    return HttpResponse()
+
+  done = []
+  done.append(SERVER_IDENTITY_HEADER_ENABLED.set_for_testing(True))
+  done.append(SERVER_IDENTITY_HEADER_NAME.set_for_testing('X-Custom-Server'))
+  done.append(SERVER_IDENTITY_HEADER_VALUE.set_for_testing('hue-prod-01'))
+  try:
+    middleware = ServerIdentityMiddleware(dummy_get_response)
+    response = middleware(request)
+    assert 'X-Custom-Server' in response
+    assert response['X-Custom-Server'] == 'hue-prod-01'
+    assert 'X-Hue-Server-Name' not in response
+  finally:
+    for finish in done:
+      finish()

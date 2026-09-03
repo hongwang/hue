@@ -60,6 +60,9 @@ from desktop.conf import (
   KNOX,
   REDIRECT_WHITELIST,
   SECURE_CONTENT_SECURITY_POLICY,
+  SERVER_IDENTITY_HEADER_ENABLED,
+  SERVER_IDENTITY_HEADER_NAME,
+  SERVER_IDENTITY_HEADER_VALUE,
   SERVER_USER,
 )
 from desktop.context_processors import get_app_name
@@ -1010,4 +1013,19 @@ class CacheControlMiddleware(Django4MiddlewareAdapterMixin):
       response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
       response['Pragma'] = 'no-cache'
       response['Expires'] = '0'
+    return response
+
+
+class ServerIdentityMiddleware(Django4MiddlewareAdapterMixin):
+  def __init__(self, get_response):
+    self.get_response = get_response
+    if not SERVER_IDENTITY_HEADER_ENABLED.get():
+      LOG.info('Unloading ServerIdentityMiddleware')
+      raise exceptions.MiddlewareNotUsed
+
+    self.header_name = SERVER_IDENTITY_HEADER_NAME.get()
+    self.header_value = SERVER_IDENTITY_HEADER_VALUE.get() or socket.gethostname()
+
+  def process_response(self, request, response):
+    response[self.header_name] = self.header_value
     return response

@@ -147,3 +147,6 @@ docs/docs-site/public/
 
 # Test data
 desktop/core/src/desktop/test_data/*
+
+.qoder/
+.venv/

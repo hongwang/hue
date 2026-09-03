@@ -67,25 +67,10 @@ const ASSIST_TABLE_TEMPLATES = `
         'Show details'
       )}</a></li>
       <!-- ko switch: sourceType -->
-      <!-- ko case: 'solr' -->
-        <!-- ko if: catalogEntry.isTableOrView() -->
-        <li><a href="javascript:void(0);" data-bind="click: openInIndexer"><i class="fa fa-fw fa-table"></i> ${I18n(
-          'Open in Browser'
-        )}</a></li>
-        <li><a href="javascript: void(0);" data-bind="click: function() { explore(true); }"><!-- ko template: { name: 'app-icon-template', data: { icon: 'dashboard' } } --><!-- /ko --> ${I18n(
-          'Open in Dashboard'
-        )}</a></li>
-        <!-- /ko -->
-      <!-- /ko -->
       <!-- ko case: $default -->
         <!-- ko if: !catalogEntry.isDatabase() && $currentApp() === 'editor' -->
         <li><a href="javascript:void(0);" data-bind="click: dblClick"><i class="fa fa-fw fa-paste"></i> ${I18n(
           'Insert at cursor'
-        )}</a></li>
-        <!-- /ko -->
-        <!-- ko if: catalogEntry.path.length <=2 -->
-        <li><a href="javascript:void(0);" data-bind="click: openInMetastore"><i class="fa fa-fw fa-table"></i> ${I18n(
-          'Open in Browser'
         )}</a></li>
         <!-- /ko -->
         <!-- ko if: catalogEntry.isTableOrView() -->
@@ -271,12 +256,6 @@ const TEMPLATE =
         'Open'
       )}"></i></a>
     </div>
-  </script>
-
-  <script type="text/html" id="collection-title-context-items">
-    <li><a href="javascript:void(0);" data-bind="hueLink: '/indexer'"><i class="fa fa-fw fa-table"></i> ${I18n(
-      'Open in Browser'
-    )}</a></li>
   </script>
 
   <script type="text/html" id="assist-database-entry">

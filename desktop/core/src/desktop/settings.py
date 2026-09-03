@@ -161,6 +161,7 @@ MIDDLEWARE = [
     'desktop.middleware.ClusterMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'desktop.middleware.CacheControlMiddleware',
+    'desktop.middleware.ServerIdentityMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
     # 'axes.middleware.FailedLoginMiddleware',
     'desktop.middleware.MimeTypeJSFileFixStreamingMiddleware',

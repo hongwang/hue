@@ -44,21 +44,6 @@
 
   % if conf.COLLECT_USAGE.get():
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=${conf.GTAG_ID.get()}"></script>
-    <script ${nonce_attribute(request)}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', '${ conf.GTAG_ID.get()}', { 
-        // Prevent GA from accidentally passing client meta data present in urls
-        send_page_view: false, 
-        page_location: 'redacted',
-        page_referrer: 'redacted',
-        allow_google_signals: false,
-        cookie_expires: 0
-        });
-    </script>
   % endif
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
