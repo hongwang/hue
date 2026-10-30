@@ -16,27 +16,33 @@
 
 import I18n from 'utils/i18n';
 
+// const DOCUMENT_TYPE_I18n = {
+//   all: I18n('All'),
+//   directory: I18n('Directory'),
+//   'link-pigscript': I18n('Pig Design'),
+//   'link-workflow': I18n('Job Design'),
+//   notebook: I18n('Notebook'),
+//   'oozie-bundle2': I18n('Oozie Bundle'),
+//   'oozie-coordinator2': I18n('Oozie Schedule'),
+//   'oozie-workflow2': I18n('Oozie Workflow'),
+//   'query-hive': window.ENABLE_UNIFIED_ANALYTICS
+//     ? I18n('Unified Analytics Query')
+//     : I18n('Hive Query'),
+//   'query-impala': I18n('Impala Query'),
+//   'search-dashboard': I18n('Search Dashboard'),
+//   'query-mapreduce': I18n('MapReduce Job'),
+//   'query-sqoop1': I18n('Import Job'),
+//   'query-spark2': I18n('Spark Job'),
+//   'query-java': I18n('Java Job'),
+//   'query-pig': I18n('Pig Script'),
+//   'query-shell': I18n('Shell Script'),
+//   'query-distcp': I18n('DistCp Job')
+// };
+
 const DOCUMENT_TYPE_I18n = {
   all: I18n('All'),
   directory: I18n('Directory'),
-  'link-pigscript': I18n('Pig Design'),
-  'link-workflow': I18n('Job Design'),
-  notebook: I18n('Notebook'),
-  'oozie-bundle2': I18n('Oozie Bundle'),
-  'oozie-coordinator2': I18n('Oozie Schedule'),
-  'oozie-workflow2': I18n('Oozie Workflow'),
-  'query-hive': window.ENABLE_UNIFIED_ANALYTICS
-    ? I18n('Unified Analytics Query')
-    : I18n('Hive Query'),
-  'query-impala': I18n('Impala Query'),
-  'search-dashboard': I18n('Search Dashboard'),
-  'query-mapreduce': I18n('MapReduce Job'),
-  'query-sqoop1': I18n('Import Job'),
-  'query-spark2': I18n('Spark Job'),
-  'query-java': I18n('Java Job'),
-  'query-pig': I18n('Pig Script'),
-  'query-shell': I18n('Shell Script'),
-  'query-distcp': I18n('DistCp Job')
+  'query-mysql-idc': I18n('Query')
 };
 
 const DOCUMENT_TYPES = [];

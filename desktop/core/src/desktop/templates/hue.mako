@@ -139,7 +139,9 @@ ${ hueIcons.symbols() }
             <select data-bind="options: clusters, optionsText: 'name', value: 'id'" class="input-small" style="margin-top:8px">
             </select>
           % endif
-          <!-- ko component: 'hue-history-panel' --><!-- /ko -->
+          <!-- ko if: False -->
+            <!-- ko component: 'hue-history-panel' --><!-- /ko -->
+          <!-- /ko -->
           <!-- ko if: hasJobBrowser -->
             <!-- ko component: { name: 'hue-job-browser-links', params: { onePageViewModel: onePageViewModel }} --><!-- /ko -->
           <!-- /ko -->

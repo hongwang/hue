@@ -484,14 +484,15 @@ class DorisApi(Api):
     columns = []
     engine = self._get_engine()
     with self._create_connection(engine) as conn:
-      # SHOW COLUMNS returns: Field(0), Type(1), Null(2), Key(3), Default(4), Extra(5)
-      result = conn.execute("SHOW COLUMNS FROM %s" % full_name)
+      # SHOW COLUMNS returns: Field(0), Type(1), Collation(2), Null(3), Key(4), Default(5), Extra(6), Privileges(7), Comment(8)
+      result = conn.execute("SHOW FULL COLUMNS FROM %s" % full_name)
       for row in result:
         column = dict(
             name=row[0],
             type=parse_sqltype(row[1]),
-            nullable=row[2] == "YES",
-            default=row[4],
+            nullable=row[3] == "YES",
+            default=row[6],
+            comment=row[8]
         )
         columns.append(column)
 

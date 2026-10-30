@@ -314,11 +314,11 @@ def describe_table(request, database, table):
   source_type = request.POST.get('source_type', request.GET.get('connector_id', request.GET.get('source_type', 'hive')))
   db = _get_db(user=request.user, source_type=source_type, cluster=cluster)
 
-  try:
-    table = db.get_table(database, table)
-  except Exception as e:
-    LOG.exception("Describe table error")
-    raise PopupException(_("DB Error"), detail=e.message if hasattr(e, 'message') and e.message else e)
+  # try:
+  #   table = db.get_table(database, table)
+  # except Exception as e:
+  #   LOG.exception("Describe table error")
+  #   raise PopupException(_("DB Error"), detail=e.message if hasattr(e, 'message') and e.message else e)
 
   if request.POST.get("format", "html") == "json":
     return JsonResponse({
@@ -339,11 +339,11 @@ def describe_table(request, database, table):
     apps_list = _get_apps(request.user, '')
 
     partitions = None
-    if app_name != 'impala' and table.partition_keys:
-      try:
-        partitions = [_massage_partition(database, table, partition) for partition in db.get_partitions(database, table)]
-      except Exception:
-        LOG.exception('Table partitions could not be retrieved')
+    # if app_name != 'impala' and table.partition_keys:
+    #   try:
+    #     partitions = [_massage_partition(database, table, partition) for partition in db.get_partitions(database, table)]
+    #   except Exception:
+    #     LOG.exception('Table partitions could not be retrieved')
 
     return render(renderable, request, {
       'apps': apps_list,
@@ -351,8 +351,10 @@ def describe_table(request, database, table):
           'name': database,
           'url': reverse('metastore:show_tables', kwargs={'database': database})
         }, {
-          'name': str(table.name),
-          'url': reverse('metastore:describe_table', kwargs={'database': database, 'table': table.name})
+          # 'name': str(table.name),
+          'name': str(table),
+          # 'url': reverse('metastore:describe_table', kwargs={'database': database, 'table': table.name})
+          'url': reverse('metastore:describe_table', kwargs={'database': database, 'table': table})
         },
       ],
       'table': table,
@@ -751,7 +753,8 @@ def drop_partition(request, database, table):
 
 
 def has_write_access(user):
-  return is_admin(user) or user.has_hue_permission(action="write", app=DJANGO_APPS[0])
+  # return is_admin(user) or user.has_hue_permission(action="write", app=DJANGO_APPS[0])
+  return False
 
 
 def _get_db(user, source_type=None, cluster=None):

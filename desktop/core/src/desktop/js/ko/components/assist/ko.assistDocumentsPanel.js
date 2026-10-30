@@ -74,7 +74,12 @@ const TEMPLATE = `
           <i class="pointer fa fa-plus" title="${I18n('New document')}"></i>
         </a>
         <ul class="dropdown-menu less-padding document-types" style="margin-top:3px; margin-left:-140px; width: 175px;position: absolute;" role="menu">
-            <!-- ko if: window.HUE_APPS.indexOf('beeswax') !== -1 -->
+              <li>
+                <a title="${I18n('Query')}" data-bind="click: function() { huePubSub.publish('open.editor.new.query', {type: 'mysql-idc', 'directoryUuid': $data.getDirectory()}); }" href="javascript:void(0);">
+                  <!-- ko template: { name: 'app-icon-template', data: { icon: 'file' } } --><!-- /ko --> ${I18n('Query')}
+                </a>
+              </li>
+            <!-- ko if: false && window.HUE_APPS.indexOf('beeswax') !== -1 -->
               <li>
                 <a title="${I18n(
                     window.ENABLE_UNIFIED_ANALYTICS ? 'Unified Analytics Query' : 'Hive Query'
